@@ -1,0 +1,12 @@
+
+    List of commands:
+    <secret>  interact with a secret  
+    ls        list all saved secrets
+    help      print this view
+    clear     clear the screen
+    exit      exit the program
+
+    Altering a secret:
+    C         copy password to clipboard
+    O         open secret entry in an editor
+    D         delete secret entry
