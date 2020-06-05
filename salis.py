@@ -6,8 +6,8 @@ import subprocess
 
 SECRET_PATH = str(pathlib.Path.home()) + "/.salis"
 TEMPLATE = str(os.getcwd()) + "/assets/blank"
+FINGER = str(os.getcwd()) + "/assets/fingerprint"
 HELP = str(os.getcwd()) + "/assets/docs"
-GPG_ID = ""
 
 
 
@@ -24,6 +24,8 @@ def prompt():
             help()
         elif cmd == "ls":
             list_secrets()
+        elif cmd == "key":
+            set_fingerprint()
         elif cmd == "exit":
             break
         elif cmd == "plaintext":
@@ -65,10 +67,32 @@ def list_secrets():
 
 
 
+def get_fingerprint():
+    with open(str(os.getcwd()) + "/.fingerprint") as fingerprint_file:
+        first_line = fingerprint_file.readline()
+        return first_line.strip()
+
+
+
+def set_fingerprint():
+    format_print("Please input your GPG key's fingerprint. (" + get_fingerprint() + ")", 2)
+   
+    target = str(os.getcwd()) + "/.fingerprint"
+    os.system("cp " + FINGER + " " + target)
+    os.system("nano " + target)
+
+    with open(target) as fingerprint_file:
+        first_line = fingerprint_file.readline().strip()
+
+    format_print("Using key " + first_line + ".", 2)
+
+
+
 def check_dir(dir_path):
     if not os.path.isdir(dir_path):
         format_print("Created a new secret directory.", 2)
         os.mkdir(dir_path)
+        set_fingerprint()
         return []
     else:
         contents = os.listdir(dir_path)
@@ -79,7 +103,7 @@ def check_dir(dir_path):
 def encrypt(target):
     tmp = target + "plaintext"
     os.system("mv " + target + " " + tmp)
-    os.system("gpg --trust-model always --output " + target + " --encrypt --recipient " + GPG_ID + " " + tmp + " > /dev/null")
+    os.system("gpg --trust-model always --output " + target + " --encrypt --recipient " + get_fingerprint() + " " + tmp + " > /dev/null")
     os.system("rm " + tmp)
 
 
