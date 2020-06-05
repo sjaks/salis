@@ -1,3 +1,13 @@
+#      _       _
+#  ___ (_) __ _| | _____  sjaks@github
+# / __|| |/ _` | |/ / __| jaks.fi
+# \__ \| | (_| |   <\__ \ ------------
+# |___// |\__,_|_|\_\___/ salis
+#    |__/
+#
+# BRIEF:
+# Secret stuff manager
+
 import os
 import pathlib
 import subprocess
@@ -41,7 +51,7 @@ def format_print(str, n):
 
 
 def reset(clear=True):
-    global secrets 
+    global secrets
     secrets = check_dir(SECRET_PATH)
 
     if clear:
@@ -80,7 +90,7 @@ def get_fingerprint():
 
 def set_fingerprint():
     format_print("Please input your GPG key's fingerprint. (" + get_fingerprint() + ")", 2)
-   
+
     target = str(os.getcwd()) + "/.fingerprint"
     os.system("cp " + FINGER + " " + target)
     os.system("nano " + target)
@@ -164,7 +174,7 @@ def get_secret(secret):
     if not secret in secrets:
         os.system("cp " + TEMPLATE + " " + target)
         os.system("nano " + target)
-        
+
         with open(target) as secret_file:
             first_line = secret_file.readline()
 
