@@ -69,6 +69,7 @@ def check_dir(dir_path):
     if not os.path.isdir(dir_path):
         format_print("Created a new secret directory.", 2)
         os.mkdir(dir_path)
+        return []
     else:
         contents = os.listdir(dir_path)
         return contents
