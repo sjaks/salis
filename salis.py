@@ -68,9 +68,13 @@ def list_secrets():
 
 
 def get_fingerprint():
-    with open(str(os.getcwd()) + "/.fingerprint") as fingerprint_file:
-        first_line = fingerprint_file.readline()
-        return first_line.strip()
+    path = str(os.getcwd()) + "/.fingerprint"
+    if os.path.exists(path):
+        with open(path) as fingerprint_file:
+            first_line = fingerprint_file.readline()
+            return first_line.strip()
+    else:
+        return ""
 
 
 
